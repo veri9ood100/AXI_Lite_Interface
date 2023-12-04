@@ -124,14 +124,16 @@ initial begin
     
     #50 ARESETN <=1; //reset off
     
-    #10 MOD_2_M_WARQST <= 1;
+    #10 MOD_2_M_RRQST <= 1;
+        MOD_2_M_RADDR <= 15;
+        MOD_2_M_WARQST <= 1;
         MOD_2_M_WADDR <= 10;
         MOD_2_M_WRQST <= 1;
         MOD_2_M_WDATA <= 'h2564;
 end
 
 initial begin
-    #200 $finish;
+    #300 $finish;
 end
 
 always @(posedge ACLK0) begin

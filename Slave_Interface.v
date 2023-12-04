@@ -79,10 +79,14 @@ end
 
 //end of Read Address
 
-//Read Data (Memory Controller)
+//memory initializing
+always @(posedge ACLK, negedge ARESETN) begin
+    if(!ARESETN) $readmemh("MEM.mem",MEM);
+end
+
+//Read Data
 always @(posedge ACLK, negedge ARESETN) begin
     if(!ARESETN) begin
-        $readmemh("MEM.mem",MEM);
         RDATA <= 0;
         RVALID <= 0;
     end

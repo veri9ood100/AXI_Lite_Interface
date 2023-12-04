@@ -61,7 +61,6 @@ module Master_Interface
 ); 
 
 //Read Channel
-//reg flag_read_done;
 
 //Read Address
 always @(posedge ACLK, negedge ARESETN) begin
@@ -71,15 +70,13 @@ always @(posedge ACLK, negedge ARESETN) begin
     end
     
     else begin
-        //flag_read_done <= ~MOD_2_M_RRQST; 
         ARVALID <= MOD_2_M_RRQST;
         ARADDR <= MOD_2_M_RADDR;
         
-        if(ARVALID && ARREADY) begin
+        if(ARREADY) begin
             ARVALID <= 0;
             ARADDR <= 0;
         end        
-        //else if(!ARVALID && ARREADY) ARVALID <= 1;
     end
 end
 
@@ -94,17 +91,20 @@ always @(posedge ACLK, negedge ARESETN) begin
     end
     
     else begin
-        if(RREADY) M_2_MOD_RDATA <= RDATA;
-        else M_2_MOD_RDATA <= 0;
+        if(RVALID && !RREADY) begin
+            RREADY <= 1;
+            M_2_MOD_RDATA <= RDATA;
+        end
         
-        if(RVALID && !RREADY) RREADY <= 1;
-        else if(!RVALID) RREADY <= 0;
+        else if(!RVALID) begin
+            RREADY <= 0;
+            M_2_MOD_RDATA <= 0;
+        end
     end
 end
 //end of Read Data
 
 //end of Read Channel
-
 
 //write channel
 
